@@ -35,16 +35,22 @@ public class TrelloClient {
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
 
-        if (boardsResponse != null) {
-            return Arrays.asList(Optional.ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
-        }
-        return new ArrayList<>();
+        return Arrays.asList(Optional.ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
+
     }
+
+
+//        if (boardsResponse != null) {
+//            return Arrays.asList(boardsResponse);
+//        }
+//        return new ArrayList<>();
+
 
 //        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
 //        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(
 //                trelloApiEndpoint + "/members/bulwahr/boards" + "?key=" + trelloAppKey + "&token" + trelloToken,
 //                TrelloBoardDto[].class);
+
 
 
     private URI urlCreate() {
