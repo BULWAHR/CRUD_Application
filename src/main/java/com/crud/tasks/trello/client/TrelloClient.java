@@ -42,15 +42,6 @@ public class TrelloClient {
         }
     }
 
-    private URI urlCreate() {
-        URI url = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/members/bulwahr/boards")
-                .queryParam("key", trelloConfig.getTrelloApiEndpoint())
-                .queryParam("token", trelloConfig.getTrelloToken())
-                .queryParam("fields", "name,id")
-                .queryParam("lists", "all").build().encode().toUri();
-        return url;
-    }
-
     public CreatedTrelloCard createdNewCard(TrelloCardDto trelloCardDto) {
         URI url = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/cards")
                 .queryParam("key", trelloConfig.getTrelloAppKey())
@@ -62,7 +53,18 @@ public class TrelloClient {
 
         return restTemplate.postForObject(url, null, CreatedTrelloCard.class);
     }
+
+    private URI urlCreate() {
+        URI url = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/members/" + trelloConfig.getTrelloUsername() + "/boards")
+                .queryParam("key", trelloConfig.getTrelloAppKey())
+                .queryParam("token", trelloConfig.getTrelloToken())
+                .queryParam("fields", "name,id")
+                .queryParam("lists", "all").build().encode().toUri();
+        return url;
+    }
 }
+
+
 
 
 
