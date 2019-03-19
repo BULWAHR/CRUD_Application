@@ -1,4 +1,3 @@
-
 package com.crud.tasks;
 
 import com.crud.tasks.domain.TaskDto;
@@ -10,6 +9,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 public class TasksApplication extends SpringBootServletInitializer {
+// public class TaskApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TasksApplication.class, args);
