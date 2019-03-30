@@ -17,6 +17,6 @@ public class TrelloTrelloDto {
     @JsonProperty("board")
     private int board;
 
-    @JsonProperty("card")
+   @JsonProperty("card")
     private int card;
 }
