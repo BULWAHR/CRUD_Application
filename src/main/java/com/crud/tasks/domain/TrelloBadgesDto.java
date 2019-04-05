@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 public class TrelloBadgesDto {
 
+    @JsonProperty("votes")
     private int votes;
 
     @JsonProperty("attachmentByType")
