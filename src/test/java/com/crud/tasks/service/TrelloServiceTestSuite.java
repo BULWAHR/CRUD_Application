@@ -1,5 +1,6 @@
 package com.crud.tasks.service;
 
+import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.*;
 import com.crud.tasks.trello.client.TrelloClient;
 import org.junit.Assert;
@@ -12,10 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -64,4 +64,31 @@ public class TrelloServiceTestSuite {
          assertNotNull(trelloBoardDtos);
         assertEquals(0, trelloBoardDtos.size());
     }
+
+//    @Test
+//    public void shouldCreateNewCardAndSendEmail() {
+//
+//        TrelloCardDto trelloCardDto = new TrelloCardDto(
+//                "Test task",
+//                "Test description",
+//                "top",
+//                "test_id"
+//        );
+//        TrelloTrelloDto trelloDto = new TrelloTrelloDto(3, 5);
+//
+//        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto(
+//                "1",
+//                "Test task",
+//                "http://test.com"
+//        );
+//
+//        when(trelloClient.createdNewCard(trelloCardDto)).thenReturn(createdTrelloCardDto);
+////        when(adminConfig.getAdminMail()).thenReturn("test@test.com");
+//
+//        CreatedTrelloCardDto newCard = trelloService.createTrelloCard(trelloCardDto);
+//
+//        assertNotNull(newCard);
+//        assertEquals("Test task", newCard.getName());
+//        verify(simpleEmailService, times(1)).send(any(Mail.class));
+//    }
 }

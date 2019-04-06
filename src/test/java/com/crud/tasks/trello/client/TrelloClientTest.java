@@ -1,5 +1,6 @@
 package com.crud.tasks.trello.client;
 
+import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.TrelloBadgesDto;
 import com.crud.tasks.domain.TrelloBoardDto;
@@ -55,6 +56,8 @@ public class TrelloClientTest {
         List<TrelloBoardDto> fetchedTrelloBoards = trelloClient.getTrelloBoards();
 
         //Then
+        assertNotNull(fetchedTrelloBoards);
+        assertNotNull(trelloBoards);
         assertEquals(1, fetchedTrelloBoards.size());
         assertEquals("test_id", fetchedTrelloBoards.get(0).getId());
         assertEquals("test_board", fetchedTrelloBoards.get(0).getName());
@@ -97,7 +100,7 @@ public class TrelloClientTest {
     @Test
     public void testReturnEmptyList() throws URISyntaxException {
         //Given
-        URI uri = new URI("http://test.com/members/artur70617627/boards?key=test&token=test&fields=name,id&lists=all");
+        URI uri = new URI("http://test.com/members/bulwahr/boards?key=test&token=test&fields=name,id&lists=all");
 
         when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(null);
 
@@ -106,5 +109,14 @@ public class TrelloClientTest {
 
         //Then
         assertEquals(0, emptyTrelloBoard.size());
+    }
+
+    @Test
+    public void adminConfigTest() {
+
+        AdminConfig adminConfig = new AdminConfig();
+        adminConfig.getAdminMail();
+
+        assertNotNull(adminConfig);
     }
 }

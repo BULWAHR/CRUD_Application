@@ -10,4 +10,7 @@ public class AdminConfig {
 
     @Value("${admin.mail}")
     private String adminMail;
+
+    @Value("dmat")
+    private String adminName;
 }
