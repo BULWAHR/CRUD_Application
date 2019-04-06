@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.util.NestedServletException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,6 +135,16 @@ public class TaskControllerTestSuite {
 
         service.deleteTask(1L);
         mockMvc.perform(delete("/v1/tasks/1").contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test(expected = NestedServletException.class)
+    public void testFetchTaskNotFoundException() throws Exception {
+
+        when(service.getTask(any())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/v1/tasks/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError());
     }
 
 
