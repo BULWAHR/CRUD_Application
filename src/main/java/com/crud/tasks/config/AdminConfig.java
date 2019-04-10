@@ -11,6 +11,6 @@ public class AdminConfig {
     @Value("${admin.mail}")
     private String adminMail;
 
-    @Value("dmat")
+    @Value("${admin.name}")
     private String adminName;
 }

@@ -15,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.util.NestedServletException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +47,8 @@ public class TaskControllerTestSuite {
         when(taskMapper.mapToTaskDtoList(any())).thenReturn(tasksDto);
 
 
-        mockMvc.perform(get("/v1/task").contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is(200))
+        mockMvc.perform(get("/v1/tasks").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
@@ -65,7 +64,7 @@ public class TaskControllerTestSuite {
 
 
         mockMvc.perform(get("/v1/tasks").contentType(MediaType.APPLICATION_JSON))
-//               .andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].title", is("task1")))
@@ -75,15 +74,17 @@ public class TaskControllerTestSuite {
     @Test
     public void testFetchTask() throws Exception {
 
-        TaskDto taskDto = new TaskDto(1L, "test_get", "test");
         Task task = new Task(1L, "test_get", "test");
+        TaskDto taskDto = new TaskDto(1L, "test_get", "test");
 
         when(service.getTask(task.getId())).thenReturn(Optional.of(task));
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
-        mockMvc.perform(get("/v1/tasks/1/getTask").contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)));
+        mockMvc.perform(get("/v1/tasks/1").param("taskId", "1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.title", is("test_get")))
+                .andExpect(jsonPath("$.content", is("test")));
 
     }
 
@@ -102,8 +103,8 @@ public class TaskControllerTestSuite {
     @Test
     public void testFetchUpdateTask() throws Exception {
 
-        TaskDto taskDto = new TaskDto((long) 1, "task", "test");
-        TaskDto updatedTaskDto = new TaskDto((long) 1, "taskUpdated", "testUpdated");
+        TaskDto taskDto = new TaskDto(1L, "task", "test");
+        TaskDto updatedTaskDto = new TaskDto(1L, "taskUpdated", "testUpdated");
         Task mappedTask = new Task(updatedTaskDto.getId(), updatedTaskDto.getTitle(), updatedTaskDto.getContent());
 
         when(taskMapper.mapToTask(Matchers.any(TaskDto.class))).thenReturn(mappedTask);
@@ -113,21 +114,25 @@ public class TaskControllerTestSuite {
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto);
 
-        mockMvc.perform(put("/v1/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/v1/tasks").contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("taskUpdated")))
                 .andExpect(jsonPath("$.content", is("testUpdated")));
+
     }
 
     @Test
     public void testFetchDeleteTask() throws Exception {
 
-        Task task = new Task(1L,"test_delete", "test");
+        Task task = new Task(2L,"test_delete", "test");
 
-        service.deleteTask(1L);
-        mockMvc.perform(delete("/v1/tasks/1").contentType(MediaType.APPLICATION_JSON));
+        service.deleteTask(2L);
+        mockMvc.perform(delete("/v1/tasks/2").contentType(MediaType.APPLICATION_JSON));
+
+        verify(service, times(1)).deleteTask(any());
     }
+
 }
